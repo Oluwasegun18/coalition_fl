@@ -2,18 +2,18 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
-# import matplotlib
+import matplotlib
 
-# matplotlib.rcParams['font.family'] = 'Times New Roman'
-# plt.rcParams['patch.force_edgecolor'] = True
-# plt.rcParams['patch.facecolor'] = 'none'
-# plt.rcParams.update({'font.size': 15}) # Sets a global font size of 14
+matplotlib.rcParams['font.family'] = 'Times New Roman'
+plt.rcParams['patch.force_edgecolor'] = True
+plt.rcParams['patch.facecolor'] = 'none'
+plt.rcParams.update({'font.size': 20}) # Sets a global font size of 14
 
 
 
 
 # Load CSV file
-csv_file = "results_new1/optimized_result.csv"
+csv_file = "results_new1/optimized_result copy.csv"
 df = pd.read_csv(csv_file)
 
 # Values
@@ -34,8 +34,8 @@ def plot_bar(values, ylabel, title, filename):
     bars = ax.bar(x, values, width, color=colors)
 
     # Labels and title
-    ax.set_xlabel('Approach',fontsize=14)
-    ax.set_ylabel(ylabel,fontsize=14)
+    ax.set_xlabel('Approach',fontsize=20)
+    ax.set_ylabel(ylabel,fontsize=20)
     # ax.set_title(title,fontsize=16)
     ax.set_xticks(x)
     ax.set_xticklabels(options)
@@ -49,8 +49,8 @@ def plot_bar(values, ylabel, title, filename):
                     textcoords="offset points",
                     ha='center', va='bottom')
 
-    # plt.tight_layout()
-    plt.savefig(f'results_new1/cifar10/{filename}',bbox_inches='tight')
+    plt.tight_layout()
+    plt.savefig(f'results_new1/{filename}',bbox_inches='tight')
     # plt.show()
     plt.close()
 

@@ -1,12 +1,12 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import os
-# import matplotlib
+import matplotlib
 
-# matplotlib.rcParams['font.family'] = 'Times New Roman'
-# plt.rcParams['patch.force_edgecolor'] = True
-# plt.rcParams['patch.facecolor'] = 'none'
-# plt.rcParams.update({'font.size': 15}) # Sets a global font size of 14
+matplotlib.rcParams['font.family'] = 'Times New Roman'
+plt.rcParams['patch.force_edgecolor'] = True
+plt.rcParams['patch.facecolor'] = 'none'
+plt.rcParams.update({'font.size': 20}) # Sets a global font size of 14
 
 
 
@@ -42,11 +42,12 @@ for name,labels, loss_file, _, _ in benchmarks:
     bench_loss = pd.read_csv(os.path.join(path,name, loss_file))
     plt.plot(bench_loss["T_val"], bench_loss["Average Loss"], '--', linewidth=2, label=labels)
 
-plt.xlabel("T (Total Payment by Main Server)",fontsize=14)
-plt.ylabel("Average Global Loss",fontsize=14)
+plt.xlabel("T (Total Payment by Main Server)",fontsize=20)
+plt.ylabel("Average Global Loss",fontsize=20)
+plt.xlim(min(ours_loss["T_val"]),max(ours_loss["T_val"]))
 # plt.title("Average Loss vs T — All Benchmarks",fontsize=16)
 plt.grid(True)
-plt.legend(fontsize=12)
+plt.legend(fontsize=18)
 # plt.tight_layout()
 plt.savefig(os.path.join(path, "avg_loss_vs_T_all_benchmarks.pdf"), bbox_inches='tight')
 plt.close()
@@ -64,11 +65,12 @@ for name,labels, _, util_file, _ in benchmarks:
     bench_util = pd.read_csv(os.path.join(path,name, util_file))
     plt.plot(bench_util["T_vals"], bench_util["Utility"], '--', linewidth=2, label=labels)
 
-plt.xlabel("T (Total Payment by Main Server)",fontsize=14)
-plt.ylabel("Global Cost",fontsize=14)
+plt.xlabel("T (Total Payment by Main Server)",fontsize=20)
+plt.ylabel("Global Cost",fontsize=20)
+plt.xlim(min(ours_util["T_vals"]), max(ours_util["T_vals"]))
 # plt.title("Utility vs T — All Benchmarks",fontsize=16)
 plt.grid(True)
-plt.legend(fontsize=12)
+plt.legend(fontsize=18)
 # plt.tight_layout()
 plt.savefig(os.path.join(path, "utility_vs_T_all_benchmarks.pdf"), bbox_inches='tight')
 plt.close()
@@ -94,11 +96,12 @@ for cluster in range(clusters):
         bench_c = pd.read_csv(os.path.join(path,name , f"cluster{cluster}_gammaB_Loss.csv"))  #bench_acc_loss #bench_acc_loss[bench_acc_loss["cluster"] == cluster]
         plt.plot(bench_c["gammaB"], bench_c["Accuracy Loss"], '--', linewidth=2, label=labels)
 
-    plt.xlabel(r"$\gamma_B$",fontsize=14)
-    plt.ylabel("Accuracy Loss",fontsize=14)
+    plt.xlabel(r"$\gamma_B$",fontsize=20)
+    plt.ylabel("Accuracy Loss",fontsize=20)
+    plt.xlim(min(ours_c["gammaB"]),max(ours_c["gammaB"]))
     # plt.title(f"Accuracy Loss vs GammaB — Cluster {cluster}",fontsize=16)
     plt.grid(True)
-    plt.legend(fontsize=12)
+    plt.legend(fontsize=18)
     # plt.tight_layout()
     plt.savefig(os.path.join(path, f"acc_loss_vs_gamma_cluster{cluster}_all_benchmarks.pdf"), bbox_inches='tight')
     plt.close()

@@ -10,6 +10,10 @@ from dirichlet_split import balanced_dirichlet_split, cluster_partition_disjoint
 from multi_split import split_non_iid_multi_cluster
 import pandas as pd
 
+RUN_SEED = int(os.environ.get("COALITION_SEED", "42"))
+np.random.seed(RUN_SEED)
+print(f"Running benchmark_6_new.py with seed={RUN_SEED}")
+
 # Upload and load MNIST
 # uploaded = files.upload()
 
@@ -29,7 +33,7 @@ y_train = np.array(cifar_train.targets)       # shape: (50000,)
 
 # data = np.load('mnist.npz')
 # x_train, y_train = data['x_train'], data['y_train']
-path = 'results_new1/cifar10/databased/result'
+path = os.environ.get("COALITION_OUTPUT_DIR", "results_new1/cifar10/databased/result")
 os.makedirs(path,exist_ok=True)
 
 # Parameters
@@ -53,6 +57,7 @@ cluster_device_data,cluster_device_labels = split_non_iid_multi_cluster(
     x_train,y_train,
     num_clusters=num_clusters,
     devices_per_cluster=devices_per_cluster,
+    seed=RUN_SEED,
     strategies=strategies,
     balanced_sizes=False,        # allow quantity skew (use True if you want equal sizes)
     dirichlet_alpha=0.03,        # make Dirichlet extra spiky
@@ -288,6 +293,12 @@ for cluster_id in range(num_clusters):
             })
 
 
+        if not r_list:
+
+
+            continue
+
+
         best_r = min(r_list, key=lambda x: x[1])[0]
         best_combination = [entry for entry in all_combinations if (entry["r"] == best_r and entry["gammaB"]==gammaB)][0]
         best_combinations.append(best_combination)
@@ -507,10 +518,12 @@ def append_row_to_csv(csv_path, row_dict):
 
 
 # Save plotted data to CSV
-csv_file = "results_new1/optimized_result.csv"
+csv_file = os.environ.get("COALITION_OPTIMIZED_CSV", "results_new1/optimized_result.csv")
 new_row = {
-    "option":"DBBA", # "Equal_B",
+    "seed": RUN_SEED,
+    "option":"DBRA", # "Equal_B",
     "T": T_opt,
+     "cost": T_opt,
      "Utility": utilities[best_idx],
      "loss": avg_losses[best_idx]
 }
@@ -548,7 +561,7 @@ for k, info in enumerate(optimal_info):
 
 # Save plotted data to CSV
 df = pd.DataFrame(save_optimal_info)
-df.to_csv(f"{path}/optimal_info_DBBA.csv", index=False)
+df.to_csv(f"{path}/optimal_info_DBRA.csv", index=False)
 
 
 T_vals = np.arange(12000, 60000, 500)
@@ -642,5 +655,5 @@ for T_val in T_vals:
 
     # Save plotted data to CSV
 df = pd.DataFrame(save_optimal_info)
-df.to_csv(f"{path}/tval_info_DBBA.csv", index=False)
+df.to_csv(f"{path}/tval_info_DBRA.csv", index=False)
 
